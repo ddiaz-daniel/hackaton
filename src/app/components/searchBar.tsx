@@ -1,10 +1,11 @@
 "use client"
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const SearchBar = () => {
-  const [query, setQuery] = useState("");  // State for the search query
-  const [results, setResults] = useState<string[]>([]); // State for search results
-
+    const router = useRouter();
+    const [query, setQuery] = useState("");  
+    const [results, setResults] = useState<string[]>([]); 
   const locations = [
     "Vienna",
     "Graz",
@@ -39,7 +40,6 @@ const SearchBar = () => {
     "Vöcklabruck",
   ];
 
-  // Handle input changes
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setQuery(value);
@@ -55,22 +55,27 @@ const SearchBar = () => {
     }
   };
 
+  // Navigate to hotels page when a location is selected
+  const handleLocationClick = (location: string) => {
+    router.push(`/hotels/${location}`); // Navigate to the dynamic hotels page with the city name
+  };
+
   return (
     <div className="flex flex-col items-center w-full max-w-md mx-auto mt-6">
       <input
         type="text"
-        placeholder="Search for a location..."
+        placeholder="Where do you want to go?"
         value={query}
         onChange={handleChange}
-        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500"
+        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
       />
       {query && results.length > 0 && (
         <ul className="mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-md max-h-48 overflow-y-auto">
           {results.map((location, index) => (
             <li
               key={index}
-              className="p-2 cursor-pointer hover:bg-gray-100"
-              onClick={() => setQuery(location)} // Set the query to the clicked result
+              className="p-2 cursor-pointer hover:bg-gray-100 text-gray-600"
+              onClick={() => handleLocationClick(location)}
             >
               {location}
             </li>
