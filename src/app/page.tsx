@@ -1,11 +1,16 @@
-import Image from "next/image";
+import UserHeader from "./components/userHeader";
+import SearchBar from "./components/searchBar";
 
 export default function Home() {
   return (
-      <div>
-        <title>Home</title>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="bg-white p-4 shadow-md pt-20">
         <UserHeader />
-        <LandingPage />
       </div>
+
+      <div className="flex-grow p-4">
+        <SearchBar />
+      </div>
+    </div>
   );
 }
