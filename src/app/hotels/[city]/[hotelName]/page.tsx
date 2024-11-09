@@ -100,7 +100,7 @@ const ReservationPage = () => {
         <div className="carousel w-80 h-80 bg-gray-300 rounded-lg overflow-hidden relative">
           {[1, 2, 3].map((img) => (
             <div key={img} className="absolute inset-0 transition-opacity duration-700">
-              <img src={`hotel-image-${img}.jpg`} alt={`Image ${img}`} className="w-full h-full object-cover" />
+              <img src={`/room${img}.jpg`} alt={`Image ${img}`} className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
