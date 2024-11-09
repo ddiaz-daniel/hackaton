@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-// Define a type for the Hotel object
+
 interface Hotel {
   name: string;
   location: string;
@@ -10,16 +10,15 @@ interface Hotel {
   image: string;
 }
 
-// 5 static hotel names (for simplicity)
+// Static data for hotels and images
 const hotelNames = [
   'GHotel',
-  'Horizon Inn',
-  'Urban Stay',
-  'Luxury Suites',
-  'Skyline Hotel'
+  'HorizonInn',
+  'UrbanStay',
+  'LuxurySuites',
+  'SkylineHotel'
 ];
 
-// 5 static images to rotate across hotels
 const hotelImages = [
   '/hotel1.jpg',
   '/hotel2.jpg',
@@ -28,53 +27,44 @@ const hotelImages = [
   '/hotel5.jpg'
 ];
 
-// Function to generate mock hotel data
+// Function to generate mock hotels data
 const generateHotels = (city: string): Hotel[] => {
   return hotelNames.map((hotelName, index) => {
-    // Random rating between 3 and 5
     const rating = (Math.random() * 2 + 3).toFixed(1);
-    const image = hotelImages[index % hotelImages.length]; // Rotate images
+    const image = hotelImages[index % hotelImages.length];
     return {
-      name: `${hotelName} ${city}`, // Append the city to the hotel name
-      location: `${city} - ${Math.floor(Math.random() * 5 + 1)} km from city center`, // Random distance from city center
+      name: `${hotelName} ${city}`,
+      location: `${city} - ${Math.floor(Math.random() * 5 + 1)} km from city center`,
       rating: parseFloat(rating),
-      image: image,
+      image: image
     };
   });
 };
 
 const HotelsPage = () => {
-  const [hotels, setHotels] = useState<Hotel[]>([]); // Ensure hotels state is typed as an array of Hotel objects
+  const [hotels, setHotels] = useState<Hotel[]>([]);
   const router = useRouter();
   const pathname = usePathname();
 
-  // Extract the city name from the URL params (e.g., /hotels/[city])
-  const city = pathname?.split('/').pop() || ''; // Get the city name from the URL path
+  // Extract city from the path
+  const city = pathname?.split('/')[2] || ''; // assuming the format is /hotels/[city]
 
-  //function to go to the hotels page
-const goBack = () => {
-  router.push("/hotels");
-}
-
-
-
-  // Filter the hotels for the current city
   useEffect(() => {
     if (city) {
-      setHotels(generateHotels(city)); // Generate hotels for the specific city
+      setHotels(generateHotels(city));  // Generate hotels for the specified city
     }
   }, [city]);
 
-  // Handle hotel card click (navigate to a details page)
+  // Handle hotel click to navigate to the details page
   const handleHotelClick = (hotelName: string) => {
-    router.push(`/hotel/${hotelName}`); // Redirect to hotel details page
+    //remove the city name form the hotel name
+    hotelName = hotelName.replace(city, '').trim();
+    router.push(`/hotels/${city}/${hotelName}`);  // Navigate to /hotels/[city]/[hotelName]
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-xl text-gray-800 mb-1">
-        Where to stay in
-      </h1>
+      <h1 className="text-xl text-gray-800 mb-1">Where to stay in</h1>
       <h2 className="text-4xl font-semibold text-gray-800 mb-6">{city}</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

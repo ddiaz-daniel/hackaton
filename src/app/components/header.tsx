@@ -12,10 +12,8 @@ const Header = () => {
 
   return (
     <header className="flex flex-col justify-center items-center bg-gray-100 pt-1 relative b-0">
-      {/* Background div */}
       <div className="absolute z-0 bg-green-500 h-10 w-full flex justify-center items-center"></div>
       
-      {/* Button with logo */}
       <button
         onClick={goMainMenu}
         className="rounded-full z-10"

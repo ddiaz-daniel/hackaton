@@ -1,5 +1,6 @@
 import UserHeader from "./components/userHeader";
 import SearchBar from "./components/searchBar";
+import ReservationList from "./components/reservationList";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
 
       <div className="flex-grow p-4">
         <SearchBar />
+        <ReservationList />
       </div>
     </div>
   );

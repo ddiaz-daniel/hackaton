@@ -51,13 +51,12 @@ const SearchBar = () => {
       );
       setResults(filteredResults);
     } else {
-      setResults([]); // Clear results when the input is empty
+      setResults([]); 
     }
   };
 
-  // Navigate to hotels page when a location is selected
   const handleLocationClick = (location: string) => {
-    router.push(`/hotels/${location}`); // Navigate to the dynamic hotels page with the city name
+    router.push(`/hotels/${location}`); 
   };
 
   return (
