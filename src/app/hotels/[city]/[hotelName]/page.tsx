@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import path from 'path';
+import { Button } from '@mui/material';
 
 // Static hotel description and prices
 const hotelDescription = 'A comfortable stay with excellent amenities and great service.';
@@ -180,12 +181,30 @@ const ReservationPage = () => {
 
       {/* Pay button */}
       <div className="mt-8">
-        <button
-          onClick={handlePayment}
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full sm:w-auto"
-        >
-          Pay: €{price}
-        </button>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginTop: 20, marginBottom: 20 }}
+            onClick={handlePayment}
+            sx={{
+                marginTop: 20,
+                marginBottom: 20,
+                backgroundColor: '#fff', // White background for button
+                border: '2px solid red', // Red border color
+                color: 'red', // Text color to match the border
+                borderRadius: '25px', // More rounded corners
+                padding: '10px 20px',
+                fontSize: '14px',
+                '&:hover': {
+                  backgroundColor: '#f8d7da', // Light red background on hover
+                  borderColor: '#c62828', // Darker border color on hover
+                  color: '#c62828', // Text color on hover
+                },
+              }}
+          >
+            Pay: €{price}
+          </Button>
       </div>
     </div>
   );

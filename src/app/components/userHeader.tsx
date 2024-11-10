@@ -11,7 +11,7 @@ const UserHeader = () => {
               alt="User avatar"
               width={300}
               height={300}
-              className="rounded-full shadow-md border-4 border-green-500 p-2"
+              className="rounded-full shadow-md border-4 border-red-500 p-2"
             />
             <div className="p-6">
         <h2 className="text-xl font-semibold text-gray-800">Hello, {firstName} {lastName}!</h2>

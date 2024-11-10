@@ -83,9 +83,23 @@ const Services = () => {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 textTransform: 'none',
-                                color: '#199bc4',
                                 margin: 'auto'
                             }}
+                            sx={{
+                                marginTop: 20,
+                                marginBottom: 20,
+                                backgroundColor: '#fff', // White background for button
+                                border: '2px solid red', // Red border color
+                                color: 'red', // Text color to match the border
+                                borderRadius: '25px', // More rounded corners
+                                padding: '10px 20px',
+                                fontSize: '14px',
+                                '&:hover': {
+                                  backgroundColor: '#f8d7da', // Light red background on hover
+                                  borderColor: '#c62828', // Darker border color on hover
+                                  color: '#c62828', // Text color on hover
+                                },
+                              }}
                         >
                             {service.icon}
                             <Typography variant="subtitle1">{service.name}</Typography>

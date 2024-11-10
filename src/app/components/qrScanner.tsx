@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
+import Button from '@mui/material/Button';
 
 interface QRScannerModalProps {
   onScanSuccess: (data: string) => void;
@@ -51,12 +52,31 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
           <h2 className="text-2xl font-semibold mb-4 text-black">QR Code Scanner</h2>
 
           {!scanning && !isAfterFirstScan? (
-            <button
-              onClick={() => setScanning(true)}
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full mb-4"
-            >
-              Start Scan
-            </button>
+            <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginTop: 20, marginBottom: 20 }}
+            onClick={() => setScanning(true)}
+            sx={{
+                marginTop: 20,
+                marginBottom: 20,
+                backgroundColor: '#fff', // White background for button
+                border: '2px solid green', // Red border color
+                color: 'green', // Text color to match the border
+                borderRadius: '25px', // More rounded corners
+                padding: '10px 20px',
+                fontSize: '14px',
+                '&:hover': {
+                  backgroundColor: '#f8d7da', // Light red background on hover
+                  borderColor: '#c62828', // Darker border color on hover
+                  color: '#c62828', // Text color on hover
+                },
+              }}
+          >
+            Start Scan
+          </Button>
+            
           ) : (
             <div className="mb-4">
               <video ref={videoRef} style={{ width: '100%' }} autoPlay />
@@ -71,16 +91,35 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
 
           {scanError && <p className="error-text text-red-500">{scanError}</p>}
 
-          <button
-            onClick={() => {
-              setModalVisible(false); 
-              setScanError(null);
-              onClose();
-            }}
-            className="bg-red-500 text-white py-2 px-4 rounded-lg w-full"
-          >
-            Close
-          </button>
+          <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        style={{ marginTop: 20, marginBottom: 20 }}
+        onClick={() => {
+            setModalVisible(false); 
+            setScanError(null);
+            onClose();
+          }}
+        sx={{
+            marginTop: 20,
+            marginBottom: 20,
+            backgroundColor: '#fff', // White background for button
+            border: '2px solid #d32f2f', // Red border color
+            color: '#d32f2f', // Text color to match the border
+            borderRadius: '25px', // More rounded corners
+            padding: '10px 20px',
+            fontSize: '14px',
+            '&:hover': {
+              backgroundColor: '#f8d7da', // Light red background on hover
+              borderColor: '#c62828', // Darker border color on hover
+              color: '#c62828', // Text color on hover
+            },
+          }}
+      >
+        Close
+      </Button>
+
         </div>
       </div>
     )
