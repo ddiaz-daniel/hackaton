@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Box, Typography, Rating, Button } from '@mui/material';
-import { alignProperty } from '@mui/material/styles/cssUtils';
 import Grid from '@mui/material/Grid';
 import WifiIcon from '@mui/icons-material/Wifi';
 import PoolIcon from '@mui/icons-material/Pool';
