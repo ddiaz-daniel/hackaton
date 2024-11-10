@@ -8,7 +8,6 @@ import path from 'path';
 // Static hotel description and prices
 const hotelDescription = 'A comfortable stay with excellent amenities and great service.';
 const mockComments = [
-  { name: 'John Doe', comment: 'Amazing stay! Highly recommend.' },
   { name: 'Jane Smith', comment: 'Beautiful hotel, will come back for sure.' },
   { name: 'Alice Johnson', comment: 'Not bad, but a little expensive for what it is.' },
 ];
@@ -139,26 +138,26 @@ const ReservationPage = () => {
 
       {/* Date Selection */}
       <div className="mt-8">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Select Check-in and Check-out Dates</h3>
+        <h3 className="text-lg font-semibold text-black mb-2">Select Check-in and Check-out Dates</h3>
         <div className="flex gap-4">
           <div>
-            <label>Check-in:</label>
+            <label className='text-black'>Check-in:</label>
             <input
               type="date"
               value={checkInDate ? dayjs(checkInDate).format('YYYY-MM-DD') : ''}
               onChange={(e) => setCheckInDate(new Date(e.target.value))}
               min={dayjs().format('YYYY-MM-DD')}
-              className="border p-2 rounded-md"
+              className="border p-2 rounded-md text-black"
             />
           </div>
           <div>
-            <label>Check-out:</label>
+            <label className='text-black'>Check-out:</label>
             <input
               type="date"
               value={checkOutDate ? dayjs(checkOutDate).format('YYYY-MM-DD') : ''}
               onChange={(e) => setCheckOutDate(new Date(e.target.value))}
               min={checkInDate ? dayjs(checkInDate).format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD')}
-              className="border p-2 rounded-md"
+              className="border p-2 rounded-md text-black"
             />
           </div>
         </div>
