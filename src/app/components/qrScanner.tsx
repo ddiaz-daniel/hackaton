@@ -13,26 +13,33 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
   const codeReader = useRef(new BrowserMultiFormatReader());
 
   useEffect(() => {
+    const getDevices = async () => {
+      const devices = await codeReader.current.getVideoInputDevices();
+      if (devices.length > 0) {
+        // Choose the first available video input device (usually the rear camera on mobile)
+        codeReader.current.decodeFromVideoDevice(devices[0].deviceId, videoRef.current, (result, error) => {
+          if (result) {
+            onScanSuccess(result.getText());
+            setScanning(false);
+            onClose();
+          }
+          if (error && !(error instanceof NotFoundException)) {
+            console.error("QR code scanning error:", error);
+            setScanError("Could not scan QR code. Please try again.");
+          }
+        });
+      }
+    };
+  
     if (scanning && videoRef.current) {
-      // Start scanning with camera
-      codeReader.current.decodeFromVideoDevice(null, videoRef.current, (result, error) => {
-        if (result) {
-          onScanSuccess(result.getText());
-          setScanning(false); // Stop scanning on success
-          onClose();
-        }
-        if (error && !(error instanceof NotFoundException)) {
-          console.error("QR code scanning error:", error);
-          setScanError("Could not scan QR code. Please try again.");
-        }
-      });
+      getDevices();
     }
-
-    // Cleanup on unmount or when scanning stops
+  
     return () => {
       codeReader.current.reset();
     };
   }, [scanning, onScanSuccess, onClose]);
+  
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
@@ -49,8 +56,8 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
           </button>
         ) : (
           <div className="mb-4">
-            <video ref={videoRef} style={{ width: '100%' }} />
-          </div>
+  <video ref={videoRef} style={{ width: '100%', height: 'auto' }} autoPlay />
+  </div>
         )}
 
         {/* Display scan error if any */}
