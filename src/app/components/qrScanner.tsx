@@ -18,7 +18,7 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
     }
   };
 
-  const handleError = (error: any) => {
+  const handleError = (error: Error) => {
     console.error("Error scanning QR code:", error);
     setScanError("Could not access camera. Please check permissions and try again.");
   };
