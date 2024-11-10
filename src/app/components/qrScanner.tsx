@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import React, { useEffect, useRef, useState } from 'react';
+import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
 
 interface QRScannerModalProps {
   onScanSuccess: (data: string) => void;
@@ -9,19 +9,30 @@ interface QRScannerModalProps {
 const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose }) => {
   const [scanning, setScanning] = useState(false);
   const [scanError, setScanError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const codeReader = useRef(new BrowserMultiFormatReader());
 
-  const handleScan = (data: string | null) => {
-    if (data) {
-      onScanSuccess(data);
-      setScanning(false); // Stop the scanner on success
-      onClose(); // Close modal after successful scan
+  useEffect(() => {
+    if (scanning && videoRef.current) {
+      // Start scanning with camera
+      codeReader.current.decodeFromVideoDevice(null, videoRef.current, (result, error) => {
+        if (result) {
+          onScanSuccess(result.getText());
+          setScanning(false); // Stop scanning on success
+          onClose();
+        }
+        if (error && !(error instanceof NotFoundException)) {
+          console.error("QR code scanning error:", error);
+          setScanError("Could not scan QR code. Please try again.");
+        }
+      });
     }
-  };
 
-  const handleError = (error: Error) => {
-    console.error("Error scanning QR code:", error);
-    setScanError("Could not access camera. Please check permissions and try again.");
-  };
+    // Cleanup on unmount or when scanning stops
+    return () => {
+      codeReader.current.reset();
+    };
+  }, [scanning, onScanSuccess, onClose]);
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
@@ -38,15 +49,7 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
           </button>
         ) : (
           <div className="mb-4">
-            <QrReader
-              onResult={(result, error) => {
-                if (result) handleScan(result.getText());
-                if (error) handleError(error);
-              }}
-              constraints={{ facingMode: 'environment' }} // use 'user' for front camera if testing on laptop/desktop
-              videoContainerStyle={{ width: '100%' }} // style the video container
-              videoStyle={{ width: '100%' }} // ensure the video preview takes full width
-            />
+            <video ref={videoRef} style={{ width: '100%' }} />
           </div>
         )}
 
@@ -54,7 +57,11 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ onScanSuccess, onClose 
         {scanError && <p className="error-text text-red-500">{scanError}</p>}
 
         <button
-          onClick={onClose}
+          onClick={() => {
+            setScanning(false);
+            setScanError(null);
+            onClose();
+          }}
           className="bg-red-500 text-white py-2 px-4 rounded-lg w-full"
         >
           Close
