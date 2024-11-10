@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import QRCode from 'react-qr-code'; // To generate the QR code
 import { format, differenceInSeconds } from 'date-fns'; // For date calculations
+import QRScanner from './qrScanner';
 
 // Types for reservation data
 interface Reservation {
@@ -23,8 +23,8 @@ const ReservationList = () => {
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [checkedIn, setCheckedIn] = useState<boolean>(false); // Track check-in status
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-
+  const [currentDate] = useState<Date>(new Date());
+  
   // Load reservations from local storage
   useEffect(() => {
     const storedReservations = localStorage.getItem('reservations');
@@ -46,6 +46,7 @@ const ReservationList = () => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [checkedIn, selectedReservation]);
+
 
   // Calculate the countdown to check-in and check-out
   const calculateCountdown = (targetDate: string) => {
@@ -97,7 +98,6 @@ const ReservationList = () => {
               <p className="text-gray-700">Guests: {reservation.guestCount}</p>
               <p className="text-gray-700">Total Price: €{reservation.price}</p>
 
-              {/* Display Countdown if within check-in and check-out date */}
               {withinCheckInDate && !checkedIn && checkInCountdown > 0 && (
                 <p className="text-gray-500">
                   Time until Check-in: {format(new Date(checkInCountdown * 1000), 'HH:mm:ss')}
@@ -118,29 +118,8 @@ const ReservationList = () => {
       </div>
 
       {isModalOpen && selectedReservation && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full">
-            <h2 className="text-2xl font-semibold mb-4">Reservation QR Code</h2>
-            
-            {/* Show QR code if within check-in or check-out range */}
-            {true && !checkedIn && (
-              <div className="mb-4">
-                <QRCode
-                  value={JSON.stringify({
-                    reservation: selectedReservation,
-                    user: selectedReservation.user,
-                  })}
-                  size={256}
-                />
-              </div>
-            )}
-            <button
-              onClick={closeModal}
-              className="bg-red-500 text-white py-2 px-4 rounded-lg w-full"
-            >
-              Close
-            </button>
-          </div>
+        <div>
+          <QRScanner onScanSuccess={() => setCheckedIn(true)} onClose={closeModal} />
         </div>
       )}
     </div>

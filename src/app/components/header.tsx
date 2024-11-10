@@ -42,7 +42,7 @@ const Header = () => {
     <header className="flex flex-row bg-white-100 pt-1 relative justify-between border-b border-gray-200 pb-2 w-[90%] mx-auto">
       <button onClick={goMainMenu} className="rounded-full z-10">
         <Image
-          src="/logo.png"
+          src="/logo.jpg"
           alt="Company Logo"
           width={60}
           height={100}
